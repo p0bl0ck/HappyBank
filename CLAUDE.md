@@ -22,10 +22,12 @@ HappyBank/
 │   │   │   ├── navigation/
 │   │   │   └── xml/ (backup rules)
 │   │   └── AndroidManifest.xml
-│   ├── build.gradle.kts (Kotlin DSL app module)
+│   ├── build.gradle.kts (Kotlin DSL with version catalog)
 │   └── proguard-rules.pro
-├── gradle/wrapper/
-├── build.gradle.kts (Kotlin DSL project root)
+├── gradle/
+│   ├── libs.versions.toml (Version catalog)
+│   └── wrapper/
+├── build.gradle.kts (Kotlin DSL with version catalog)
 ├── settings.gradle.kts (Kotlin DSL settings)
 ├── gradle.properties (enhanced for Kotlin DSL)
 └── gradlew / gradlew.bat
@@ -36,6 +38,7 @@ HappyBank/
 - **Language**: Kotlin 2.2.20 (latest stable)
 - **Build System**: Gradle 8.13 with Android Gradle Plugin 8.13.0
 - **Build Configuration**: Kotlin DSL (.kts files) for type safety and IDE support
+- **Dependency Management**: Gradle Version Catalogs (TOML) for centralized version control
 - **UI Framework**: Material Design 3 with AndroidX libraries
 - **Architecture**: Navigation Component with Fragments
 - **View Binding**: Enabled for type-safe view access
@@ -73,7 +76,9 @@ HappyBank/
 - Use the established color scheme (green primary, blue accent)
 - Follow existing package structure in `com.happybank.app`
 - **Kotlin DSL**: All build files use Kotlin DSL for type safety and better IDE support
+- **Version Catalogs**: Use `libs.versions.toml` for centralized dependency management
 - Leverage Gradle configuration cache and build cache for faster builds
+- When adding new dependencies, update the version catalog first for consistency
 
 ## Current Features
 
@@ -99,7 +104,17 @@ HappyBank/
 
 - **gradle.properties**: AndroidX enabled, optimized JVM settings, Kotlin DSL caching
 - **Build Scripts**: Full Kotlin DSL migration with type safety and modern syntax
+- **Version Catalog**: Centralized dependency management in `libs.versions.toml`
+- **Dependency Bundles**: Organized dependency groups for easier management
 - **Icons**: Adaptive icons with HappyBank green branding
 - **Proguard**: Release build optimization configured
 - **Security**: Data extraction rules configured for banking app
 - **Performance**: Configuration cache and build cache enabled for faster builds
+
+## Version Catalog Structure
+
+The `gradle/libs.versions.toml` file contains:
+- **[versions]**: All dependency versions in one place
+- **[libraries]**: Individual library definitions
+- **[bundles]**: Grouped related dependencies (core, lifecycle, navigation, testing)
+- **[plugins]**: Build plugins with version management
