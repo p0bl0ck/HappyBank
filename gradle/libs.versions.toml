@@ -23,9 +23,8 @@ androidx-navigation = "2.9.5"
 material = "1.13.0"
 
 # Testing
-junit = "4.13.2"
-androidx-test-ext-junit = "1.3.0"
-androidx-test-espresso-core = "3.7.0"
+junit6 = "6.0.0"
+junit6-platform = "6.0.0"
 
 [libraries]
 # AndroidX Core
@@ -45,9 +44,10 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 # Testing
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso-core" }
+junit6-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit6" }
+junit6-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit6" }
+junit6-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit6" }
+junit6-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher", version.ref = "junit6-platform" }
 
 [bundles]
 # AndroidX core libraries
@@ -70,11 +70,11 @@ androidx-navigation = [
 ]
 
 # Testing libraries
-testing = [
-    "junit",
-    "androidx-test-ext-junit",
-    "androidx-test-espresso-core"
+junit6-testing = [
+    "junit6-api",
+    "junit6-params"
 ]
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -41,6 +41,15 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -56,8 +65,9 @@ dependencies {
     // Navigation libraries
     implementation(libs.bundles.androidx.navigation)
 
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
+    // JUnit 6 Testing
+    testImplementation(libs.bundles.junit6.testing)
+    testRuntimeOnly(libs.junit6.engine)
+    testRuntimeOnly(libs.junit6.platform.launcher)
+
 }

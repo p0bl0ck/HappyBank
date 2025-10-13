@@ -56,12 +56,13 @@ HappyBank/
 - **ConstraintLayout**: 2.2.1 (latest layout system)
 - **Navigation Component**: 2.9.5 (latest navigation framework)
 - **Lifecycle Components**: 2.9.4 (ViewModel, LiveData latest)
-- **Test Libraries**: JUnit 4.13.2, AndroidX Test 1.3.0, Espresso 3.7.0
+- **Testing**: JUnit 6.0.0 (Jupiter), AndroidX Test 1.3.0, Espresso 3.7.0
 
 ## Common Commands
 
 - **Build**: `./gradlew build`
-- **Run tests**: `./gradlew test`
+- **Run tests**: `./gradlew test` (JUnit 6 with detailed reporting)
+- **Run unit tests only**: `./gradlew testDebugUnitTest`
 - **Clean**: `./gradlew clean`
 - **Install debug APK**: `./gradlew installDebug`
 - **Lint check**: `./gradlew lint`
@@ -116,5 +117,15 @@ HappyBank/
 The `gradle/libs.versions.toml` file contains:
 - **[versions]**: All dependency versions in one place
 - **[libraries]**: Individual library definitions
-- **[bundles]**: Grouped related dependencies (core, lifecycle, navigation, testing)
+- **[bundles]**: Grouped related dependencies (core, lifecycle, navigation, junit6-testing, android-testing)
 - **[plugins]**: Build plugins with version management
+
+## Testing Framework
+
+**JUnit 6 (Jupiter) Features:**
+- Modern testing framework with better assertions and annotations
+- `@DisplayName` for readable test descriptions
+- `@Nested` classes for organized test structure
+- `@ParameterizedTest` with `@ValueSource` for data-driven tests
+- JUnit Platform integration with Gradle
+- Sample test class demonstrating banking validation patterns
