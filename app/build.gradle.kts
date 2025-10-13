@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
 }
 
 android {
@@ -39,8 +40,9 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
     }
+
 
     testOptions {
         unitTests {
@@ -53,6 +55,9 @@ android {
 }
 
 dependencies {
+    // Compose BOM - manages all Compose library versions
+    implementation(platform(libs.compose.bom))
+
     // AndroidX Core libraries
     implementation(libs.bundles.androidx.core)
 
@@ -62,12 +67,24 @@ dependencies {
     // Lifecycle libraries
     implementation(libs.bundles.androidx.lifecycle)
 
-    // Navigation libraries
-    implementation(libs.bundles.androidx.navigation)
+
+    // Jetpack Compose
+    implementation(libs.bundles.compose)
+
+    // Compose Navigation
+    implementation(libs.bundles.compose.navigation.bundle)
+
 
     // JUnit 6 Testing
     testImplementation(libs.bundles.junit6.testing)
     testRuntimeOnly(libs.junit6.engine)
     testRuntimeOnly(libs.junit6.platform.launcher)
 
+    // Compose Testing
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.bundles.compose.testing)
+
+    // Compose Debug Tools
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
 }

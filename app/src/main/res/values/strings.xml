@@ -1,12 +1,3 @@
 <resources>
     <string name="app_name">HappyBank</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Welcome to HappyBank</string>
-    <string name="second_fragment_label">Banking Services</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Welcome to HappyBank!\n\nYour trusted banking partner</string>
-    <string name="hello_second_fragment">Banking Services\n\nManage your accounts and transactions</string>
 </resources>
