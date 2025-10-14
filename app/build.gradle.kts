@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 android {
@@ -43,6 +45,9 @@ android {
         compose = true
     }
 
+    hilt {
+        enableAggregatingTask = false
+    }
 
     testOptions {
         unitTests {
@@ -74,6 +79,9 @@ dependencies {
     // Compose Navigation
     implementation(libs.bundles.compose.navigation.bundle)
 
+    // Hilt Dependency Injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
     // JUnit 6 Testing
     testImplementation(libs.bundles.junit6.testing)

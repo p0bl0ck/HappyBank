@@ -8,19 +8,26 @@ import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.happybank.app.ui.theme.HappyBankTheme
+import com.happybank.app.ui.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateToSecond: () -> Unit = {}
+    onNavigateToSecond: () -> Unit = {},
+    viewModel: HomeViewModel = hiltViewModel()
 ) {
+    val userName by viewModel.userName.collectAsState()
+    val accountBalance by viewModel.accountBalance.collectAsState()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -57,7 +64,10 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
             // Welcome Card
-            WelcomeCard()
+            WelcomeCard(
+                userName = userName,
+                accountBalance = accountBalance
+            )
 
             // Quick Actions
             QuickActionsSection()
@@ -69,7 +79,10 @@ fun HomeScreen(
 }
 
 @Composable
-private fun WelcomeCard() {
+private fun WelcomeCard(
+    userName: String,
+    accountBalance: String
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -82,7 +95,7 @@ private fun WelcomeCard() {
                 .padding(20.dp)
         ) {
             Text(
-                text = "Welcome to HappyBank",
+                text = "Welcome back, $userName",
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 fontWeight = FontWeight.Bold
@@ -90,8 +103,20 @@ private fun WelcomeCard() {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Your modern banking experience",
-                style = MaterialTheme.typography.bodyLarge,
+                style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = "Total Balance",
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.7f)
+            )
+            Text(
+                text = accountBalance,
+                style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                fontWeight = FontWeight.Bold
             )
         }
     }
