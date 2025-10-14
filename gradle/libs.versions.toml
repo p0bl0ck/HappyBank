@@ -27,6 +27,9 @@ compose-navigation = "2.9.5"
 compose-lifecycle-viewmodel = "2.9.4"
 hilt = "2.57.2"
 
+# Code Quality
+detekt = "1.23.7"
+
 # Testing
 junit6 = "6.0.0"
 junit6-platform = "6.0.0"
@@ -117,3 +120,4 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

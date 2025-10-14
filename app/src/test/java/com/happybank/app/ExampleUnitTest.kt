@@ -85,7 +85,7 @@ class Calculator {
     fun multiply(a: Int, b: Int): Int = a * b
 
     fun divide(a: Int, b: Int): Int {
-        if (b == 0) throw IllegalArgumentException("Cannot divide by zero")
+        require(b != 0) { "Cannot divide by zero" }
         return a / b
     }
 }
