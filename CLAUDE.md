@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-HappyBank is a fully modernized Android banking application built with Kotlin and cutting-edge Android development practices. The project uses Jetpack Compose with Material Design 3, Compose Navigation, and modern reactive architecture for a professional banking app experience.
+HappyBank is a fully modernized Android banking application built with Kotlin and cutting-edge Android development practices. The project uses Jetpack Compose with Material Design 3, Compose Navigation, Clean Architecture, and modern reactive architecture for a professional banking app experience.
 
 ## Repository Structure
 
@@ -16,16 +16,34 @@ HappyBank/
 │   │   │   ├── MainActivity.kt (@AndroidEntryPoint Compose Activity)
 │   │   │   ├── HappyBankApp.kt (Navigation & App Structure)
 │   │   │   ├── HappyBankApplication.kt (@HiltAndroidApp)
-│   │   │   └── ui/
-│   │   │       ├── screen/
-│   │   │       │   ├── HomeScreen.kt (with HomeViewModel)
-│   │   │       │   └── ServicesScreen.kt
-│   │   │       ├── viewmodel/
-│   │   │       │   └── HomeViewModel.kt (@HiltViewModel)
-│   │   │       └── theme/
-│   │   │           ├── Color.kt
-│   │   │           ├── Theme.kt
-│   │   │           └── Type.kt
+│   │   │   ├── core/                    # Shared modules
+│   │   │   │   ├── ui/theme/            # App-wide theming
+│   │   │   │   │   ├── Color.kt
+│   │   │   │   │   ├── Theme.kt
+│   │   │   │   │   └── Type.kt
+│   │   │   │   ├── domain/              # Shared domain logic
+│   │   │   │   ├── data/                # Shared data layer
+│   │   │   │   └── util/                # Common utilities
+│   │   │   └── feature/                 # Feature modules
+│   │   │       ├── home/
+│   │   │       │   ├── presentation/    # UI Layer (Composables, ViewModels)
+│   │   │       │   │   ├── HomeScreen.kt
+│   │   │       │   │   └── HomeViewModel.kt (@HiltViewModel)
+│   │   │       │   ├── domain/          # Business logic
+│   │   │       │   │   ├── model/       # Domain models
+│   │   │       │   │   └── usecase/     # Use cases
+│   │   │       │   └── data/            # Data layer
+│   │   │       │       ├── model/       # DTOs
+│   │   │       │       └── repository/  # Repository implementations
+│   │   │       └── services/
+│   │   │           ├── presentation/
+│   │   │           │   └── ServicesScreen.kt
+│   │   │           ├── domain/
+│   │   │           │   ├── model/
+│   │   │           │   └── usecase/
+│   │   │           └── data/
+│   │   │               ├── model/
+│   │   │               └── repository/
 │   │   ├── res/
 │   │   │   ├── values/ (strings, colors, themes)
 │   │   │   ├── mipmap/ (launcher icons)
@@ -52,7 +70,7 @@ HappyBank/
 - **Build Configuration**: Kotlin DSL (.kts files) for type safety and IDE support
 - **Dependency Management**: Gradle Version Catalogs (TOML) for centralized version control
 - **UI Framework**: Jetpack Compose with Material Design 3
-- **Architecture**: MVVM with Hilt dependency injection
+- **Architecture**: Clean Architecture with MVVM and Hilt dependency injection
 - **Dependency Injection**: Hilt 2.57.2 with kapt annotation processing
 - **Code Quality**: Detekt 1.23.7 with detekt-formatting plugin
 - **Compose**: Declarative UI with type-safe navigation
@@ -105,11 +123,14 @@ HappyBank/
 - Use the established HappyBank color scheme (green primary, blue accent)
 
 ### Architecture & Code
-- **MVVM Pattern**: Use ViewModels for business logic
+- **Clean Architecture**: Follow layer separation (presentation, domain, data)
+- **Feature Modules**: Organize code by feature in `feature/` directory
+- **MVVM Pattern**: Use ViewModels for presentation logic
 - **Dependency Injection**: Use @HiltViewModel and @Inject for DI
 - **State Management**: Use StateFlow for reactive UI state
 - **Compose State**: Use remember, derivedStateOf for local state
-- Follow existing package structure in `com.happybank.app`
+- **Core Module**: Use `core/` for shared utilities, theme, and common code
+- **Package Structure**: `feature/{feature-name}/{presentation,domain,data}`
 - Maintain security best practices for banking app
 
 ### Build & Dependencies
@@ -138,11 +159,15 @@ HappyBank/
 - Dark mode support with dynamic theming
 
 ### Architecture & DI
+- **Clean Architecture** with feature-based folder structure
+- **Feature modules**: `home` and `services` with layer separation
+- **Core module**: Shared theme, domain, data, and utilities
 - **Hilt** dependency injection fully integrated
 - **HomeViewModel** with StateFlow for reactive state
 - @HiltViewModel annotation for ViewModel injection
 - @AndroidEntryPoint on MainActivity
 - Dynamic user data display from ViewModel
+- Prepared for future Gradle modularization
 
 ### Code Quality
 - **Detekt** static code analysis configured
@@ -159,7 +184,7 @@ HappyBank/
 
 ## Build Status
 
-✅ **Project fully modernized with Jetpack Compose, Hilt DI, and Detekt linting**
+✅ **Project fully modernized with Jetpack Compose, Clean Architecture, Hilt DI, and Detekt linting**
 - **Build**: `./gradlew build` ✅ Successful
 - **Tests**: `./gradlew test` ✅ All 18 unit tests pass
 - **Detekt**: `./gradlew detekt` ✅ 0 code smells
@@ -285,3 +310,74 @@ open app/build/reports/detekt/detekt.html
 - **Formatting**: 4 spaces indentation, no trailing spaces, proper spacing
 - **Potential Bugs**: Unnecessary operators, unreachable code, equals/hashcode
 - **Coroutines**: Global usage checks, suspend function validations
+
+## Clean Architecture
+
+**Layer Structure:**
+The project follows Clean Architecture principles with clear separation of concerns:
+
+```
+feature/
+└── {feature-name}/
+    ├── presentation/    # UI Layer
+    │   ├── Screen.kt    # Composables
+    │   └── ViewModel.kt # UI state & logic
+    ├── domain/          # Business Logic Layer
+    │   ├── model/       # Domain entities
+    │   └── usecase/     # Business rules
+    └── data/            # Data Layer
+        ├── model/       # DTOs, API models
+        └── repository/  # Data sources
+```
+
+**Dependency Rules:**
+- **Presentation** depends on **Domain**
+- **Domain** is independent (pure Kotlin)
+- **Data** depends on **Domain**
+- Dependencies point inward (toward domain)
+
+**Example Feature Implementation:**
+```kotlin
+// Domain Layer (pure business logic)
+package com.happybank.app.feature.home.domain.model
+data class UserAccount(val name: String, val balance: Double)
+
+package com.happybank.app.feature.home.domain.usecase
+class GetUserAccountUseCase @Inject constructor(
+    private val repository: AccountRepository
+) {
+    suspend operator fun invoke(): Result<UserAccount>
+}
+
+// Data Layer (data sources)
+package com.happybank.app.feature.home.data.repository
+class AccountRepositoryImpl @Inject constructor(
+    private val api: BankingApi,
+    private val cache: AccountCache
+) : AccountRepository {
+    override suspend fun getUserAccount(): Result<UserAccount>
+}
+
+// Presentation Layer (UI)
+package com.happybank.app.feature.home.presentation
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val getUserAccount: GetUserAccountUseCase
+) : ViewModel() {
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
+}
+```
+
+**Core Module:**
+Shared code lives in `core/`:
+- `core/ui/theme/` - App-wide theming
+- `core/domain/` - Shared domain models/interfaces
+- `core/data/` - Shared data utilities
+- `core/util/` - Common utilities
+
+**Benefits:**
+- **Testability**: Each layer can be tested independently
+- **Maintainability**: Clear responsibilities and boundaries
+- **Scalability**: Easy to add new features
+- **Modularity**: Prepared for Gradle multi-module setup

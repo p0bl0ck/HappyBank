@@ -1,4 +1,4 @@
-package com.happybank.app.ui.screen
+package com.happybank.app.feature.home.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -17,8 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.happybank.app.ui.theme.HappyBankTheme
-import com.happybank.app.ui.viewmodel.HomeViewModel
+import com.happybank.app.core.ui.theme.HappyBankTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

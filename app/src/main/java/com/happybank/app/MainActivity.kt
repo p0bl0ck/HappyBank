@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.happybank.app.ui.theme.HappyBankTheme
+import com.happybank.app.core.ui.theme.HappyBankTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

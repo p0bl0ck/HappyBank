@@ -1,4 +1,4 @@
-package com.happybank.app.ui.viewmodel
+package com.happybank.app.feature.home.presentation
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

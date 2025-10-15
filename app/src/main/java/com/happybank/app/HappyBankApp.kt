@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.happybank.app.ui.screen.HomeScreen
-import com.happybank.app.ui.screen.ServicesScreen
+import com.happybank.app.feature.home.presentation.HomeScreen
+import com.happybank.app.feature.services.presentation.ServicesScreen
 
 @Composable
 fun HappyBankApp() {
