@@ -1,9 +1,9 @@
 # 📋 HappyBank Development Plan
 
 ## 🎯 Project Status
-**Current State**: Jetpack Compose modernization complete with Hilt DI, Detekt linting, Clean Architecture, and full networking infrastructure with mock server.
+**Current State**: Jetpack Compose modernization complete with Hilt DI, Detekt linting, Clean Architecture, full networking infrastructure with mock server, and core domain value objects (Money & Currency).
 
-**Last Updated**: October 16, 2025
+**Last Updated**: October 17, 2025
 
 ---
 
@@ -54,11 +54,27 @@
 - [x] **BuildConfig** - Flavor-specific BASE_URL configuration
 - [x] All 4 variants build successfully ✅
 
+### ✅ Domain Value Objects (Completed)
+- [x] **Currency Value Object** - Type-safe currency representation
+- [x] **8 predefined currencies** - USD, EUR, GBP, JPY, PLN, CHF, CAD, AUD
+- [x] **Money Value Object** - Immutable monetary amounts with currency
+- [x] **Arithmetic operators** - Add, subtract, multiply, divide with type safety
+- [x] **Comparison operators** - Full compareTo implementation
+- [x] **Formatted display** - Currency symbols and thousands separators ($1,234.56)
+- [x] **Extension functions** - Convenience methods (100.usd(), 50.eur())
+- [x] **Currency validation** - Prevents mixing different currencies
+- [x] **Edge case handling** - Negative zero, floating-point precision
+- [x] **Comprehensive testing** - 83 unit tests (21 Currency + 62 Money)
+- [x] **JVM 17 upgrade** - Modern Java features support
+
 ### 🔄 Next Immediate Priorities
-- [ ] **Repository Pattern** - Implement data repositories using APIs
-- [ ] **Use Cases** - Create domain layer business logic
-- [ ] **Modules** - Feature-based Gradle modularization
-- [ ] **GitHub Actions** - CI/CD pipeline automation
+- [ ] **Accounts Feature Module** - Create separate accounts feature with clean architecture
+- [ ] **Account Domain Model** - Domain model using Money value object
+- [ ] **Room Database** - Local storage with AccountEntity and AccountDao
+- [ ] **Repository Pattern** - Implement AccountRepository with cache-first strategy
+- [ ] **Use Cases** - GetAccountUseCase and RefreshAccountUseCase
+- [ ] **Offline-First Architecture** - Cache + network with smart refresh
+- [ ] **Pull-to-Refresh UI** - HomeScreen integration with last updated timestamp
 
 ## 🎨 Phase 2: Enhanced UX & Design (Week 3)
 

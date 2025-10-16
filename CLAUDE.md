@@ -23,6 +23,9 @@ HappyBank/
 │   │   │   │   │   │   ├── Theme.kt
 │   │   │   │   │   │   └── Type.kt
 │   │   │   │   │   ├── domain/              # Shared domain logic
+│   │   │   │   │   │   └── model/           # Core value objects
+│   │   │   │   │   │       ├── Currency.kt  # Currency value object
+│   │   │   │   │   │       └── Money.kt     # Money value object
 │   │   │   │   │   ├── data/                # Shared data layer
 │   │   │   │   │   │   ├── NetworkModule.kt # Retrofit/OkHttp DI
 │   │   │   │   │   │   └── api/             # Shared API models
@@ -87,7 +90,7 @@ HappyBank/
 - **Dependency Injection**: Hilt 2.57.2 with kapt annotation processing
 - **Code Quality**: Detekt 1.23.7 with detekt-formatting plugin
 - **Compose**: Declarative UI with type-safe navigation
-- **JVM Target**: Java 11 (for optimal compatibility)
+- **JVM Target**: Java 17 (modern features, required for JUnit 6)
 - **Target SDK**: 36 (Android 15)
 - **Compile SDK**: 36 (Android 15 API Level 36)
 - **Minimum SDK**: 24 (Android 7.0)
@@ -203,13 +206,12 @@ HappyBank/
 
 ## Build Status
 
-✅ **Project fully modernized with Jetpack Compose, Clean Architecture, Hilt DI, and Detekt linting**
-- **Build**: `./gradlew build` ✅ Successful
-- **Tests**: `./gradlew test` ✅ All 18 unit tests pass
-- **Detekt**: `./gradlew detekt` ✅ 0 code smells
+✅ **Project fully modernized with Jetpack Compose, Clean Architecture, Hilt DI, and domain value objects**
+- **Build**: `./gradlew build` ✅ Successful (JVM 17)
+- **Tests**: `./gradlew testMockDebugUnitTest` ✅ All 83 unit tests pass
+- **Detekt**: `./gradlew detekt` ✅ 0 code smells (production code)
 - **Lint**: `./gradlew lint` ✅ No critical issues
-- **Debug APK**: `./gradlew assembleDebug` (optimized APK)
-- **Release APK**: `./gradlew assembleRelease`
+- **All 4 variants**: mockDebug, mockRelease, prodDebug, prodRelease ✅
 - **Compose previews**: Available in Android Studio
 
 ## Project Configuration
@@ -575,3 +577,29 @@ app/src/
 - ✅ Zero mock code in production
 - ✅ Real HTTP calls (not interceptors)
 - ✅ Easy to add new mock endpoints
+
+## Domain Value Objects
+
+**Core financial value objects with type safety.**
+
+### Currency & Money
+- **Currency.kt** (`core/domain/model/`) - Type-safe currency representation
+  - 8 predefined currencies (USD, EUR, GBP, JPY, PLN, CHF, CAD, AUD)
+  - Custom currency support via `Currency.fromCode()`
+
+- **Money.kt** (`core/domain/model/`) - Immutable monetary amounts
+  - Type-safe arithmetic: `money1 + money2`, `money * 2`
+  - Currency validation: prevents mixing different currencies
+  - Formatted display: `$1,234.56`, `€1.234,56`
+  - Extension functions: `100.usd()`, `50.eur()`
+
+**Usage:**
+```kotlin
+val price = 100.usd()
+val discount = price * 0.20
+val final = price - discount  // $80.00
+```
+
+**Documentation:** See `VALUE_OBJECTS.md` for detailed examples and patterns.
+
+**Testing:** 83 unit tests (21 Currency + 62 Money) - all passing
