@@ -1,5 +1,6 @@
 package com.happybank.app.core.data
 
+import com.happybank.app.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,12 +17,14 @@ import javax.inject.Singleton
 /**
  * Hilt module for providing networking dependencies
  * Provides Retrofit, OkHttp, and JSON serialization configuration
+ *
+ * BASE_URL is determined by build flavor:
+ * - mock: http://localhost:8080/ (NanoHTTPD server)
+ * - prod: https://api.happybank.com/ (real API)
  */
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-
-    private const val BASE_URL = "https://api.happybank.com/" // Replace with actual API URL
 
     /**
      * Provides JSON serializer with custom configuration
@@ -76,7 +79,7 @@ object NetworkModule {
     ): Retrofit {
         val contentType = "application/json".toMediaType()
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(json.asConverterFactory(contentType))
             .build()

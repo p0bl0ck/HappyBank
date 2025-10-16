@@ -1,0 +1,51 @@
+{
+  "success": true,
+  "data": [
+    {
+      "id": "TXN-001",
+      "type": "debit",
+      "amount": -45.99,
+      "description": "Amazon Purchase",
+      "date": "2025-10-14T15:30:00Z",
+      "category": "Shopping",
+      "status": "completed"
+    },
+    {
+      "id": "TXN-002",
+      "type": "credit",
+      "amount": 2500.00,
+      "description": "Salary Deposit",
+      "date": "2025-10-13T09:00:00Z",
+      "category": "Income",
+      "status": "completed"
+    },
+    {
+      "id": "TXN-003",
+      "type": "debit",
+      "amount": -120.50,
+      "description": "Electricity Bill",
+      "date": "2025-10-12T14:20:00Z",
+      "category": "Utilities",
+      "status": "completed"
+    },
+    {
+      "id": "TXN-004",
+      "type": "debit",
+      "amount": -35.00,
+      "description": "Restaurant",
+      "date": "2025-10-11T19:45:00Z",
+      "category": "Food",
+      "status": "completed"
+    },
+    {
+      "id": "TXN-005",
+      "type": "debit",
+      "amount": -89.99,
+      "description": "Gas Station",
+      "date": "2025-10-10T08:15:00Z",
+      "category": "Transportation",
+      "status": "completed"
+    }
+  ],
+  "message": "Transactions retrieved successfully"
+}

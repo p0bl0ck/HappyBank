@@ -11,45 +11,58 @@ HappyBank is a fully modernized Android banking application built with Kotlin an
 ```
 HappyBank/
 ├── app/
-│   ├── src/main/
-│   │   ├── java/com/happybank/app/
-│   │   │   ├── MainActivity.kt (@AndroidEntryPoint Compose Activity)
-│   │   │   ├── HappyBankApp.kt (Navigation & App Structure)
-│   │   │   ├── HappyBankApplication.kt (@HiltAndroidApp)
-│   │   │   ├── core/                    # Shared modules
-│   │   │   │   ├── ui/theme/            # App-wide theming
-│   │   │   │   │   ├── Color.kt
-│   │   │   │   │   ├── Theme.kt
-│   │   │   │   │   └── Type.kt
-│   │   │   │   ├── domain/              # Shared domain logic
-│   │   │   │   ├── data/                # Shared data layer
-│   │   │   │   └── util/                # Common utilities
-│   │   │   └── feature/                 # Feature modules
-│   │   │       ├── home/
-│   │   │       │   ├── presentation/    # UI Layer (Composables, ViewModels)
-│   │   │       │   │   ├── HomeScreen.kt
-│   │   │       │   │   └── HomeViewModel.kt (@HiltViewModel)
-│   │   │       │   ├── domain/          # Business logic
-│   │   │       │   │   ├── model/       # Domain models
-│   │   │       │   │   └── usecase/     # Use cases
-│   │   │       │   └── data/            # Data layer
-│   │   │       │       ├── model/       # DTOs
-│   │   │       │       └── repository/  # Repository implementations
-│   │   │       └── services/
-│   │   │           ├── presentation/
-│   │   │           │   └── ServicesScreen.kt
-│   │   │           ├── domain/
-│   │   │           │   ├── model/
-│   │   │           │   └── usecase/
-│   │   │           └── data/
-│   │   │               ├── model/
-│   │   │               └── repository/
-│   │   ├── res/
-│   │   │   ├── values/ (strings, colors, themes)
-│   │   │   ├── mipmap/ (launcher icons)
-│   │   │   └── xml/ (backup rules)
-│   │   └── AndroidManifest.xml
-│   ├── build.gradle.kts (Kotlin DSL with version catalog)
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/com/happybank/app/
+│   │   │   │   ├── MainActivity.kt (@AndroidEntryPoint)
+│   │   │   │   ├── HappyBankApp.kt (Navigation)
+│   │   │   │   ├── HappyBankApplication.kt (@HiltAndroidApp)
+│   │   │   │   ├── core/                    # Shared modules
+│   │   │   │   │   ├── ui/theme/            # App-wide theming
+│   │   │   │   │   │   ├── Color.kt
+│   │   │   │   │   │   ├── Theme.kt
+│   │   │   │   │   │   └── Type.kt
+│   │   │   │   │   ├── domain/              # Shared domain logic
+│   │   │   │   │   ├── data/                # Shared data layer
+│   │   │   │   │   │   ├── NetworkModule.kt # Retrofit/OkHttp DI
+│   │   │   │   │   │   └── api/             # Shared API models
+│   │   │   │   │   │       └── ApiResponse.kt
+│   │   │   │   │   └── util/                # Common utilities
+│   │   │   │   └── feature/                 # Feature modules
+│   │   │   │       ├── home/
+│   │   │   │       │   ├── presentation/    # UI Layer
+│   │   │   │       │   │   ├── HomeScreen.kt
+│   │   │   │       │   │   └── HomeViewModel.kt
+│   │   │   │       │   ├── domain/          # Business logic
+│   │   │   │       │   │   ├── model/       # Domain models
+│   │   │   │       │   │   └── usecase/     # Use cases
+│   │   │   │       │   └── data/            # Data layer
+│   │   │   │       │       ├── api/         # API interfaces
+│   │   │   │       │       │   └── AccountApi.kt
+│   │   │   │       │       ├── model/       # DTOs
+│   │   │   │       │       │   └── AccountDto.kt
+│   │   │   │       │       └── repository/  # Repositories
+│   │   │   │       └── services/
+│   │   │   │           ├── presentation/
+│   │   │   │           │   └── ServicesScreen.kt
+│   │   │   │           ├── domain/
+│   │   │   │           └── data/
+│   │   │   ├── res/
+│   │   │   └── AndroidManifest.xml
+│   │   ├── mock/                            # Mock build flavor
+│   │   │   ├── assets/mock/                 # JSON mock responses
+│   │   │   │   ├── account.json
+│   │   │   │   ├── balance.json
+│   │   │   │   └── transactions.json
+│   │   │   └── java/com/happybank/app/
+│   │   │       ├── ApplicationInitializer.kt # Starts MockServer
+│   │   │       └── mock/
+│   │   │           ├── MockServer.kt        # NanoHTTPD server
+│   │   │           └── MockServerModule.kt  # Hilt DI
+│   │   └── prod/                            # Production build flavor
+│   │       └── java/com/happybank/app/
+│   │           └── ApplicationInitializer.kt # Empty (no mock)
+│   ├── build.gradle.kts (Flavors: mock, prod)
 │   └── proguard-rules.pro
 ├── config/
 │   └── detekt/
@@ -57,7 +70,7 @@ HappyBank/
 ├── gradle/
 │   ├── libs.versions.toml (Version catalog)
 │   └── wrapper/
-├── build.gradle.kts (Kotlin DSL with Detekt configuration)
+├── build.gradle.kts (Kotlin DSL with Detekt)
 ├── settings.gradle.kts (Kotlin DSL settings)
 ├── gradle.properties (enhanced for Kotlin DSL)
 └── gradlew / gradlew.bat
@@ -90,18 +103,24 @@ HappyBank/
 - **Lifecycle Components**: 2.9.4 (ViewModel, LiveData latest)
 - **Hilt**: 2.57.2 (Dependency Injection with Compose integration)
 - **Detekt**: 1.23.7 (Static code analysis with formatting plugin)
+- **Retrofit**: 2.11.0 (Type-safe REST API client)
+- **OkHttp**: 4.12.0 (HTTP client with logging interceptor)
+- **Kotlin Serialization**: 1.8.0 (Type-safe JSON serialization)
+- **NanoHTTPD**: 2.3.1 (Mock server for development - mock flavor only)
 - **Testing**: JUnit 6.0.0 (Jupiter) with comprehensive parameterized tests
 - **Compose**: BOM 2025.10.00 with Material Icons Extended
 
 ## Common Commands
 
 ### Build & Test
-- **Build**: `./gradlew build`
+- **Build all flavors**: `./gradlew build`
+- **Build mock flavor**: `./gradlew assembleMockDebug`
+- **Build prod flavor**: `./gradlew assembleProdDebug`
 - **Run tests**: `./gradlew test` (JUnit 6 with detailed reporting)
 - **Run unit tests only**: `./gradlew testDebugUnitTest`
 - **Clean**: `./gradlew clean`
-- **Install debug APK**: `./gradlew installDebug`
-- **Generate APK**: `./gradlew assembleDebug`
+- **Install mock APK**: `./gradlew installMockDebug`
+- **Install prod APK**: `./gradlew installProdDebug`
 
 ### Code Quality
 - **Run Detekt**: `./gradlew detekt` (static code analysis)
@@ -381,3 +400,178 @@ Shared code lives in `core/`:
 - **Maintainability**: Clear responsibilities and boundaries
 - **Scalability**: Easy to add new features
 - **Modularity**: Prepared for Gradle multi-module setup
+
+## Networking Infrastructure
+
+**Stack:**
+The project uses modern networking with Retrofit, OkHttp, and Kotlin Serialization.
+
+### NetworkModule (Hilt DI)
+```kotlin
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient, json: Json): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.BASE_URL) // Flavor-specific
+            .client(okHttpClient)
+            .addConverterFactory(json.asConverterFactory(contentType))
+            .build()
+    }
+}
+```
+
+### API Interfaces (Retrofit)
+```kotlin
+interface AccountApi {
+    @GET("api/v1/account")
+    suspend fun getAccount(
+        @Header("Authorization") authorization: String
+    ): ApiResponse<AccountDto>
+}
+```
+
+### DTOs (Kotlin Serialization)
+```kotlin
+@Serializable
+data class AccountDto(
+    @SerialName("account_id") val accountId: String,
+    @SerialName("balance") val balance: Double,
+    @SerialName("user_name") val userName: String
+)
+```
+
+### Generic Response Wrappers
+```kotlin
+@Serializable
+data class ApiResponse<T>(
+    val success: Boolean,
+    val data: T? = null,
+    val message: String? = null
+)
+
+sealed class ApiResult<out T> {
+    data class Success<T>(val data: T) : ApiResult<T>()
+    data class Error(val message: String) : ApiResult<Nothing>()
+    data object Loading : ApiResult<Nothing>()
+}
+```
+
+**Configuration:**
+- **JSON**: Ignore unknown keys, coerce null values, lenient parsing
+- **OkHttp**: 30s timeouts, logging interceptor (debug), ready for auth
+- **Retrofit**: Suspend functions for coroutines, type-safe API calls
+
+## Build Flavors & Mock Server
+
+**The project uses build flavors to separate mock and production environments.**
+
+### Flavors Configuration
+```kotlin
+flavorDimensions += "environment"
+productFlavors {
+    create("mock") {
+        dimension = "environment"
+        applicationIdSuffix = ".mock"
+        buildConfigField("String", "BASE_URL", "\"http://localhost:8080/\"")
+    }
+    create("prod") {
+        dimension = "environment"
+        buildConfigField("String", "BASE_URL", "\"https://api.happybank.com/\"")
+    }
+}
+```
+
+### Mock Server (NanoHTTPD)
+
+**Purpose**: On-device HTTP server serving JSON from assets for development/testing.
+
+**MockServer.kt** (mock flavor only):
+```kotlin
+class MockServer @Inject constructor(
+    private val context: Context
+) : NanoHTTPD(8080) {
+
+    override fun serve(session: IHTTPSession): Response {
+        return when {
+            session.uri.startsWith("/api/v1/account") ->
+                serveJsonFromAssets("mock/account.json")
+            session.uri.startsWith("/api/v1/transactions") ->
+                serveJsonFromAssets("mock/transactions.json")
+            else -> notFound()
+        }
+    }
+
+    private fun serveJsonFromAssets(path: String): Response {
+        val json = context.assets.open(path).bufferedReader().use { it.readText() }
+        return newFixedLengthResponse(Response.Status.OK, "application/json", json)
+    }
+}
+```
+
+### Mock JSON Files
+
+Located in `app/src/mock/assets/mock/`:
+
+**account.json**:
+```json
+{
+  "success": true,
+  "data": {
+    "account_id": "ACC-001",
+    "account_number": "1234567890",
+    "account_type": "Checking",
+    "balance": 12345.67,
+    "currency": "USD",
+    "user_name": "John Doe"
+  }
+}
+```
+
+**transactions.json**: List of transaction records
+**balance.json**: Simple balance response
+
+### Flavor-Specific Source Sets
+
+```
+app/src/
+├── main/           # Shared code for all flavors
+├── mock/           # Mock flavor only
+│   ├── assets/mock/         # JSON responses
+│   └── java/.../
+│       ├── ApplicationInitializer.kt  # Starts MockServer
+│       └── mock/
+│           ├── MockServer.kt          # NanoHTTPD
+│           └── MockServerModule.kt    # Hilt DI
+└── prod/           # Production flavor only
+    └── java/.../
+        └── ApplicationInitializer.kt  # Empty (no mock server)
+```
+
+### Usage
+
+**Development with mock server**:
+```bash
+./gradlew installMockDebug
+# App starts with NanoHTTPD on localhost:8080
+# All API calls go to mock server
+# Modify JSON files in assets/mock/ to change responses
+```
+
+**Production build**:
+```bash
+./gradlew assembleProdRelease
+# Zero mock code included
+# API calls go to real backend
+# Smaller APK size
+```
+
+**Benefits:**
+- ✅ Develop without backend dependency
+- ✅ Fast iteration (edit JSON, restart app)
+- ✅ Consistent test data
+- ✅ Zero mock code in production
+- ✅ Real HTTP calls (not interceptors)
+- ✅ Easy to add new mock endpoints

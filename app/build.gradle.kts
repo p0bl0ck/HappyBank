@@ -22,6 +22,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    flavorDimensions += "environment"
+    productFlavors {
+        create("mock") {
+            dimension = "environment"
+            applicationIdSuffix = ".mock"
+            versionNameSuffix = "-mock"
+            buildConfigField("String", "BASE_URL", "\"http://localhost:8080/\"")
+        }
+        create("prod") {
+            dimension = "environment"
+            buildConfigField("String", "BASE_URL", "\"https://api.happybank.com/\"")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -45,6 +59,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     hilt {
@@ -87,6 +102,9 @@ dependencies {
 
     // Networking (Retrofit, OkHttp, Kotlin Serialization)
     implementation(libs.bundles.networking)
+
+    // NanoHTTPD - only for mock flavor
+    "mockImplementation"(libs.nanohttpd)
 
     // JUnit 6 Testing
     testImplementation(libs.bundles.junit6.testing)
