@@ -1,7 +1,7 @@
-package com.happybank.app.feature.home.data.api
+package com.happybank.app.feature.accounts.data.api
 
 import com.happybank.app.core.data.api.ApiResponse
-import com.happybank.app.feature.home.data.model.AccountDto
+import com.happybank.app.feature.accounts.data.model.AccountDto
 import retrofit2.http.GET
 import retrofit2.http.Header
 

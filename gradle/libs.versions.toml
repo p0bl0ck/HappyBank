@@ -5,7 +5,7 @@ kotlin = "2.2.20"
 
 # Android SDK
 compileSdk = "36"
-minSdk = "24"
+minSdk = "26"
 targetSdk = "36"
 
 # AndroidX Core

@@ -1,4 +1,4 @@
-package com.happybank.app.feature.home.data.model
+package com.happybank.app.feature.accounts.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
