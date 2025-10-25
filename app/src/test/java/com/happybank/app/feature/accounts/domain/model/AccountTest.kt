@@ -34,10 +34,10 @@ class AccountTest {
         @Test
         @DisplayName("Create account with different account types")
         fun `create account with different account types`() {
-            val checking = createTestAccount(type = AccountType.CHECKING)
-            val savings = createTestAccount(type = AccountType.SAVINGS)
-            val credit = createTestAccount(type = AccountType.CREDIT_CARD)
-            val investment = createTestAccount(type = AccountType.INVESTMENT)
+            val checking = createTestAccount { type = AccountType.CHECKING }
+            val savings = createTestAccount { type = AccountType.SAVINGS }
+            val credit = createTestAccount { type = AccountType.CREDIT_CARD }
+            val investment = createTestAccount { type = AccountType.INVESTMENT }
 
             assertEquals(AccountType.CHECKING, checking.type)
             assertEquals(AccountType.SAVINGS, savings.type)
@@ -48,9 +48,9 @@ class AccountTest {
         @Test
         @DisplayName("Create account with different currencies")
         fun `create account with different currencies`() {
-            val usdAccount = createTestAccount(balance = 1000.0.usd())
-            val eurAccount = createTestAccount(balance = Money.eur(1000.0))
-            val gbpAccount = createTestAccount(balance = Money.gbp(1000.0))
+            val usdAccount = createTestAccount { balance = 1000.0.usd() }
+            val eurAccount = createTestAccount { balance = Money.eur(1000.0) }
+            val gbpAccount = createTestAccount { balance = Money.gbp(1000.0) }
 
             assertEquals(Currency.USD, usdAccount.balance.currency)
             assertEquals(Currency.EUR, eurAccount.balance.currency)
@@ -65,35 +65,35 @@ class AccountTest {
         @Test
         @DisplayName("Mask account number with 10 digits")
         fun `mask account number with 10 digits`() {
-            val account = createTestAccount(accountNumber = "1234567890")
+            val account = createTestAccount { accountNumber = "1234567890" }
             assertEquals("****7890", account.maskedAccountNumber)
         }
 
         @Test
         @DisplayName("Mask account number with 8 digits")
         fun `mask account number with 8 digits`() {
-            val account = createTestAccount(accountNumber = "12345678")
+            val account = createTestAccount { accountNumber = "12345678" }
             assertEquals("****5678", account.maskedAccountNumber)
         }
 
         @Test
         @DisplayName("Mask account number with exactly 4 digits")
         fun `mask account number with exactly 4 digits`() {
-            val account = createTestAccount(accountNumber = "1234")
+            val account = createTestAccount { accountNumber = "1234" }
             assertEquals("****1234", account.maskedAccountNumber)
         }
 
         @Test
         @DisplayName("Show full account number if less than 4 digits")
         fun `show full account number if less than 4 digits`() {
-            val account = createTestAccount(accountNumber = "123")
+            val account = createTestAccount { accountNumber = "123" }
             assertEquals("123", account.maskedAccountNumber)
         }
 
         @Test
         @DisplayName("Handle empty account number")
         fun `handle empty account number`() {
-            val account = createTestAccount(accountNumber = "")
+            val account = createTestAccount { accountNumber = "" }
             assertEquals("", account.maskedAccountNumber)
         }
     }
@@ -105,7 +105,7 @@ class AccountTest {
         @Test
         @DisplayName("Has sufficient balance when balance is greater")
         fun `has sufficient balance when balance is greater`() {
-            val account = createTestAccount(balance = 1000.0.usd())
+            val account = createTestAccount { balance = 1000.0.usd() }
 
             assertTrue(account.hasSufficientBalance(500.0.usd()))
             assertTrue(account.hasSufficientBalance(999.0.usd()))
@@ -114,7 +114,7 @@ class AccountTest {
         @Test
         @DisplayName("Has sufficient balance when balance equals amount")
         fun `has sufficient balance when balance equals amount`() {
-            val account = createTestAccount(balance = 1000.0.usd())
+            val account = createTestAccount { balance = 1000.0.usd() }
 
             assertTrue(account.hasSufficientBalance(1000.0.usd()))
         }
@@ -122,7 +122,7 @@ class AccountTest {
         @Test
         @DisplayName("Does not have sufficient balance when balance is less")
         fun `does not have sufficient balance when balance is less`() {
-            val account = createTestAccount(balance = 1000.0.usd())
+            val account = createTestAccount { balance = 1000.0.usd() }
 
             assertFalse(account.hasSufficientBalance(1001.0.usd()))
             assertFalse(account.hasSufficientBalance(2000.0.usd()))
@@ -131,7 +131,7 @@ class AccountTest {
         @Test
         @DisplayName("Has sufficient balance with zero amount")
         fun `has sufficient balance with zero amount`() {
-            val account = createTestAccount(balance = 1000.0.usd())
+            val account = createTestAccount { balance = 1000.0.usd() }
 
             assertTrue(account.hasSufficientBalance(Money.zero(Currency.USD)))
         }
@@ -139,7 +139,7 @@ class AccountTest {
         @Test
         @DisplayName("Throws exception when currencies do not match")
         fun `throws exception when currencies do not match`() {
-            val usdAccount = createTestAccount(balance = 1000.0.usd())
+            val usdAccount = createTestAccount { balance = 1000.0.usd() }
             val eurAmount = Money.eur(500.0)
 
             val exception = assertThrows<IllegalArgumentException> {
@@ -154,7 +154,7 @@ class AccountTest {
         @Test
         @DisplayName("Works with different currencies when matching")
         fun `works with different currencies when matching`() {
-            val eurAccount = createTestAccount(balance = Money.eur(1000.0))
+            val eurAccount = createTestAccount { balance = Money.eur(1000.0) }
 
             assertTrue(eurAccount.hasSufficientBalance(Money.eur(500.0)))
             assertFalse(eurAccount.hasSufficientBalance(Money.eur(1500.0)))
@@ -168,7 +168,7 @@ class AccountTest {
         @Test
         @DisplayName("Account is fresh when just created")
         fun `account is fresh when just created`() {
-            val account = createTestAccount(lastUpdated = Instant.now())
+            val account = createTestAccount { lastUpdated = Instant.now() }
 
             assertTrue(account.isFresh)
         }
@@ -177,7 +177,7 @@ class AccountTest {
         @DisplayName("Account is fresh when updated 4 minutes ago")
         fun `account is fresh when updated 4 minutes ago`() {
             val fourMinutesAgo = Instant.now().minusSeconds(240)
-            val account = createTestAccount(lastUpdated = fourMinutesAgo)
+            val account = createTestAccount { lastUpdated = fourMinutesAgo }
 
             assertTrue(account.isFresh)
         }
@@ -186,7 +186,7 @@ class AccountTest {
         @DisplayName("Account is not fresh at exactly 5 minutes")
         fun `account is not fresh at exactly 5 minutes`() {
             val fiveMinutesAgo = Instant.now().minusSeconds(300)
-            val account = createTestAccount(lastUpdated = fiveMinutesAgo)
+            val account = createTestAccount { lastUpdated = fiveMinutesAgo }
 
             // At exactly 5 minutes boundary, considered stale
             assertFalse(account.isFresh)
@@ -196,7 +196,7 @@ class AccountTest {
         @DisplayName("Account is not fresh when updated 6 minutes ago")
         fun `account is not fresh when updated 6 minutes ago`() {
             val sixMinutesAgo = Instant.now().minusSeconds(360)
-            val account = createTestAccount(lastUpdated = sixMinutesAgo)
+            val account = createTestAccount { lastUpdated = sixMinutesAgo }
 
             assertFalse(account.isFresh)
         }
@@ -205,7 +205,7 @@ class AccountTest {
         @DisplayName("Account is not fresh when updated 1 hour ago")
         fun `account is not fresh when updated 1 hour ago`() {
             val oneHourAgo = Instant.now().minusSeconds(3600)
-            val account = createTestAccount(lastUpdated = oneHourAgo)
+            val account = createTestAccount { lastUpdated = oneHourAgo }
 
             assertFalse(account.isFresh)
         }
@@ -272,7 +272,7 @@ class AccountTest {
         @Test
         @DisplayName("Check if can make withdrawal")
         fun `check if can make withdrawal`() {
-            val account = createTestAccount(balance = 1000.0.usd())
+            val account = createTestAccount { balance = 1000.0.usd() }
             val withdrawalAmount = 300.0.usd()
 
             assertTrue(account.hasSufficientBalance(withdrawalAmount))
@@ -285,7 +285,7 @@ class AccountTest {
         @Test
         @DisplayName("Check if can make large purchase")
         fun `check if can make large purchase`() {
-            val account = createTestAccount(balance = 500.0.usd())
+            val account = createTestAccount { balance = 500.0.usd() }
             val purchaseAmount = 1000.0.usd()
 
             assertFalse(account.hasSufficientBalance(purchaseAmount))
@@ -294,17 +294,17 @@ class AccountTest {
         @Test
         @DisplayName("Multiple accounts with different balances")
         fun `multiple accounts with different balances`() {
-            val checkingAccount = createTestAccount(
-                id = "CHK-001",
-                type = AccountType.CHECKING,
+            val checkingAccount = createTestAccount {
+                id = "CHK-001"
+                type = AccountType.CHECKING
                 balance = 5000.0.usd()
-            )
+            }
 
-            val savingsAccount = createTestAccount(
-                id = "SAV-001",
-                type = AccountType.SAVINGS,
+            val savingsAccount = createTestAccount {
+                id = "SAV-001"
+                type = AccountType.SAVINGS
                 balance = 10000.0.usd()
-            )
+            }
 
             assertTrue(checkingAccount.hasSufficientBalance(4000.0.usd()))
             assertTrue(savingsAccount.hasSufficientBalance(9000.0.usd()))
@@ -314,7 +314,7 @@ class AccountTest {
         @Test
         @DisplayName("Account security - masked number for display")
         fun `account security - masked number for display`() {
-            val account = createTestAccount(accountNumber = "9876543210")
+            val account = createTestAccount { accountNumber = "9876543210" }
 
             // Never show full account number in UI
             assertEquals("****3210", account.maskedAccountNumber)
@@ -326,27 +326,27 @@ class AccountTest {
         @Test
         @DisplayName("Cache invalidation based on freshness")
         fun `cache invalidation based on freshness`() {
-            val freshAccount = createTestAccount(lastUpdated = Instant.now())
-            val staleAccount = createTestAccount(
+            val freshAccount = createTestAccount { lastUpdated = Instant.now() }
+            val staleAccount = createTestAccount {
                 lastUpdated = Instant.now().minusSeconds(600) // 10 minutes ago
-            )
+            }
 
             assertTrue(freshAccount.isFresh) // No need to refresh
             assertFalse(staleAccount.isFresh) // Should refresh from API
         }
     }
 
-    // Helper function to create test accounts
-    private fun createTestAccount(
-        id: String = "ACC-001",
-        accountNumber: String = "1234567890",
-        type: AccountType = AccountType.CHECKING,
-        balance: Money = 1000.0.usd(),
-        owner: String = "John Doe",
-        createdAt: Instant = Instant.now().minusSeconds(86400), // 1 day ago
-        lastUpdated: Instant = Instant.now()
-    ): Account {
-        return Account(
+    // Test Account Builder Pattern
+    private class AccountBuilder {
+        var id: String = "ACC-001"
+        var accountNumber: String = "1234567890"
+        var type: AccountType = AccountType.CHECKING
+        var balance: Money = 1000.0.usd()
+        var owner: String = "John Doe"
+        var createdAt: Instant = Instant.now().minusSeconds(86400) // 1 day ago
+        var lastUpdated: Instant = Instant.now()
+
+        fun build(): Account = Account(
             id = id,
             accountNumber = accountNumber,
             type = type,
@@ -355,5 +355,9 @@ class AccountTest {
             createdAt = createdAt,
             lastUpdated = lastUpdated
         )
+    }
+
+    private fun createTestAccount(init: AccountBuilder.() -> Unit = {}): Account {
+        return AccountBuilder().apply(init).build()
     }
 }

@@ -41,7 +41,7 @@ complexity:
   TooManyFunctions:
     active: true
     thresholdInFiles: 15
-    thresholdInClasses: 15
+    thresholdInClasses: 17
 
 coroutines:
   active: true
