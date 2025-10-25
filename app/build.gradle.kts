@@ -89,6 +89,9 @@ dependencies {
     // Lifecycle libraries
     implementation(libs.bundles.androidx.lifecycle)
 
+    // Room Database
+    implementation(libs.bundles.room)
+    kapt(libs.androidx.room.compiler)
 
     // Jetpack Compose
     implementation(libs.bundles.compose)

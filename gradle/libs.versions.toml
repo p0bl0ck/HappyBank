@@ -16,6 +16,8 @@ androidx-constraintlayout = "2.2.1"
 # Lifecycle
 androidx-lifecycle = "2.9.4"
 
+# Room Database
+androidx-room = "2.8.3"
 
 # Material Design
 material = "1.13.0"
@@ -50,6 +52,10 @@ androidx-constraintlayout = { group = "androidx.constraintlayout", name = "const
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidx-lifecycle" }
 
+# Room Database
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidx-room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidx-room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidx-room" }
 
 # Material Design
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
@@ -100,6 +106,11 @@ androidx-lifecycle = [
     "androidx-lifecycle-viewmodel-ktx"
 ]
 
+# Room Database libraries
+room = [
+    "androidx-room-runtime",
+    "androidx-room-ktx"
+]
 
 # Jetpack Compose libraries
 compose = [
